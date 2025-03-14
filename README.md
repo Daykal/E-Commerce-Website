@@ -1,6 +1,5 @@
 # E-Commerce-Website
 ECommerce website to publish video games/applications. Backend, Frontend, Database all from scratch. 
- E-Commerce website to publish video games/applications, with Backend, Database and Frondend
 Description
 I am developing a full-stack E-Commerce website similar to Itch.io, Steam or Epic Games. Users will be able to register/login, browse video game pages, rate games, review games and simulate game purchases (no real transactions). 
 I will handle both the backend and frontend development and the project is from scratch.
