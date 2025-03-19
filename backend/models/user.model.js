@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
           default: 1,
         },
         product: {
-          type: mongoose.Schema.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
         },
       },
@@ -42,11 +42,10 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-
 // pre save middleware hooks to hash password before saving into database
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  
+
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -54,7 +53,7 @@ userSchema.pre("save", async function (next) {
   } catch (err) {
     next(err);
   }
-  
+
   next();
 });
 

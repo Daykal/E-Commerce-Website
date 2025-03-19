@@ -31,6 +31,6 @@ isFeatured:{
 
 
 
-const Games = mongoose.model("Game", gameScgema);
+const Games = mongoose.model("Game", gameSchema);
 
 export default Games;
