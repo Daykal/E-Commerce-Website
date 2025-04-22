@@ -103,3 +103,46 @@ async function createNewCoupon(userId) {
 
   return newCoupon;
 }
+
+export const checkoutSuccess = async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (session.payment_status === "paid") {
+      if (session.metadata.couponCode) {
+        await Coupon.findOneAndUpdate(
+          {
+            code: session.metadata.couponCode,
+            userId: session.metadata.userId,
+          },
+          {
+            isActive: false,
+          }
+        );
+      }
+
+      const products = JSON.parse(session.metadata.products);
+      const newOrder = new Order({
+        user: session.metadata.userId,
+        products: products.map((product) => ({
+          product: product.id,
+          price: product.price,
+        })),
+        totalAmount: session.amount_total / 100, //Convert from cents to dollers
+        stripeSessionId: sessionId,
+      });
+
+      await newOrder.save();
+      res
+        .status(200)
+        .json({
+          Success: true,
+          message: "Payment successful, order created and coupon deactivated if used.",
+          OrderId: newOrder._id,
+        });
+    }
+  } catch (err) {
+    console.error("Error processing successful checkout:", error);
+		res.status(500).json({ message: "Error processing successful checkout", error: error.message });
+  }
+};
