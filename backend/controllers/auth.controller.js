@@ -137,10 +137,10 @@ export const refreshToken = async (req, res) => {
   }
 };
 
-// export const getPorifle = async (req, res) => {
-//   try {
-    
-//   } catch (err) {
-    
-//   }
-// };
+export const getPorifle = async (req, res) => {
+  try {
+    res.json(req.user);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message});
+  }
+};
