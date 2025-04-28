@@ -3,6 +3,8 @@ import HomePage from "./pages/HomePage.jsx";
 import SignUpPage from "./pages/SignUpPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import Navbar from "./components/Navbar.jsx";
+import TestPage from "./pages/test.jsx";
+import { Toaster } from "react-hot-toast";
 function App() {
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
@@ -18,8 +20,10 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/test" element={<TestPage />} />
         </Routes>
       </div>
+      <Toaster/>
     </div>
   );
 }

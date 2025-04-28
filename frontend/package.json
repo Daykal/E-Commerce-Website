@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^7.2.0",
+    "@tailwindcss/postcss": "^4.1.4",
     "@tailwindcss/vite": "^4.1.4",
+    "autoprefixer": "^10.4.21",
     "axios": "^1.8.4",
     "framer-motion": "^12.7.4",
     "lucide-react": "^0.503.0",
+    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",
