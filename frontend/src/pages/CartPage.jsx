@@ -3,7 +3,6 @@ import { useCartStore } from "../stores/useCartStore";
 import { motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 import CartItem from "../components/CartItem";
-import PeopleAlsoBought from "../components/PeopleAlsoBought";
 import OrderSummary from "../components/OrderSummary";
 import GiftCouponCard from "../components/GiftCouponCard";
 
@@ -29,7 +28,6 @@ const CartPage = () => {
 								))}
 							</div>
 						)}
-						{cart.length > 0 && <PeopleAlsoBought />}
 					</motion.div>
 
 					{cart.length > 0 && (
