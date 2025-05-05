@@ -6,7 +6,7 @@ export const getCartGames = async (req, res) => {
 
     res.json(Games);
   } catch (err) {
-    json.status(500).json({ message: "Server error", err: err.message });
+    res.status(500).json({ message: "Server error", err: err.message });
   }
 };
 
