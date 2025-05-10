@@ -69,7 +69,7 @@ export const createCheckoutSession = async (req, res) => {
     });
     // if customer spent more than 50 usd they get coupon
     if (totalAmount >= 5000) {
-      await creeateNewCoupon(req.user._id);
+      await createNewCoupon(req.user._id);
     }
     res.status(200).json({ id: session.id, totalAmount: totalAmount / 100 });
 
@@ -88,26 +88,13 @@ async function createStripeCoupon(discountPercentage) {
   return coupon.id;
 }
 
-async function createNewCoupon(userId) {
-  await Coupon.findByIdAndDelete({ userId: userId });
-
-  const newCoupon = new Coupon({
-    code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
-    discountPercentage: 10,
-    expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // expire in 30 days
-    userId: userId,
-  });
-
-  await newCoupon.save();
-
-  return newCoupon;
-}
-
 export const checkoutSuccess = async (req, res) => {
   try {
     const { sessionId } = req.body;
     const session = await stripe.checkout.sessions.retrieve(sessionId);
-    if (session.payment_status === "paid") {
+    const existingOrder = await Order.findOne({ stripeSessionId: sessionId });
+
+    if (!existingOrder && session.payment_status === "paid") {
       if (session.metadata.couponCode) {
         await Coupon.findOneAndUpdate(
           {
@@ -144,3 +131,18 @@ export const checkoutSuccess = async (req, res) => {
 		res.status(500).json({ message: "Error processing successful checkout", error: err.message });
   }
 };
+
+async function createNewCoupon(userId) {
+	await Coupon.findOneAndDelete({ userId });
+
+	const newCoupon = new Coupon({
+		code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+		discountPercentage: 10,
+		expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+		userId: userId,
+	});
+
+  await newCoupon.save();
+
+  return newCoupon;
+}
