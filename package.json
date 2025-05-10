@@ -4,8 +4,9 @@
   "description": "ECommerce website to publish video games/applications. Backend, Frontend, Database all from scratch. \r Description\r I am developing a full-stack E-Commerce website similar to Itch.io, Steam or Epic Games. Users will be able to register/login, browse video game pages, rate games, review games and simulate game purchases (no real transactions). \r I will handle both the backend and frontend development and the project is from scratch.\r Tech Stack:\r     • Frontend: React.js, Tailwind CSS \r     • Backend: Node.js, Express.js, MongoDB, Stripe  \r Core Features:\r     • API route handling, CRUD operation\r     • User registration/login with authentication \r     • Secure shopping cart functionality \r     • Coupon code system \r     • Payment simulation using Stripe \r     • Sorting, pagination, and filtering of products \r     • Admin dashboard with product management \r     • Caching and optimization \r Challenges & Solutions\r 1. Learning New Technologies\r     • Solution: Research, Google, and YouTube tutorials.\r 2. Scope Management (Over/Under Scoping)\r     • Solution: Revise and refine the project scope as needed.\r 3. Feature Expansion\r     • If time allows, I may integrate my personal video game project into this platform or add a comment section for users to review video games(Nice to have).",
   "main": "backend/server.js",
   "scripts": {
-    "Dev": "nodemon backend/server.js",
-    "Start": "node backend/server.js"
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": {
     "type": "git",
