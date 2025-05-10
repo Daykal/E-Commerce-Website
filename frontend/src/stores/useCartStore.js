@@ -48,7 +48,7 @@ export const useCartStore = create((set, get) => ({
 	},
 	addToCart: async (product) => {
 		try {
-			await axios.post("/cart", { productId: product._id });
+			await axios.post("/cart", { gameId: product._id });
 			toast.success("Product added to cart");
 
 			set((prevState) => {
@@ -65,21 +65,9 @@ export const useCartStore = create((set, get) => ({
 			toast.error(error.response.data.message || "An error occurred");
 		}
 	},
-	removeFromCart: async (productId) => {
-		await axios.delete(`/cart`, { data: { productId } });
-		set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== productId) }));
-		get().calculateTotals();
-	},
-	updateQuantity: async (productId, quantity) => {
-		if (quantity === 0) {
-			get().removeFromCart(productId);
-			return;
-		}
-
-		await axios.put(`/cart/${productId}`, { quantity });
-		set((prevState) => ({
-			cart: prevState.cart.map((item) => (item._id === productId ? { ...item, quantity } : item)),
-		}));
+	removeFromCart: async (gameId) => {
+		await axios.delete(`/cart`, { gameId });
+		set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== gameId) }));
 		get().calculateTotals();
 	},
 	calculateTotals: () => {

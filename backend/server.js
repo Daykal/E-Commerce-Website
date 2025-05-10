@@ -22,7 +22,7 @@ app.use("/api/auth", authRouts);
 app.use("/api/games", gameRouts);
 app.use("/api/cart", cartRouts);
 app.use("/api/coupons", couponRouts);
-app.use("/api/payment", paymentRouts);
+app.use("/api/payments", paymentRouts);
 app.use("/api/analytics", analyticsRouts);
 
 app.listen(PORT, () => {

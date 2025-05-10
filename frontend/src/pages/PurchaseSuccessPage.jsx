@@ -9,13 +9,15 @@ const PurchaseSuccessPage = () => {
 	const [isProcessing, setIsProcessing] = useState(true);
 	const { clearCart } = useCartStore();
 	const [error, setError] = useState(null);
-
+	const [orderId, setOrderId] = useState(null);
+	
 	useEffect(() => {
 		const handleCheckoutSuccess = async (sessionId) => {
 			try {
-				await axios.post("/payments/checkout-success", {
+				const res = await axios.post("/payments/checkout-success", {
 					sessionId,
 				});
+				setOrderId(res.data.OrderId);
 				clearCart();
 			} catch (error) {
 				console.log(error);
@@ -23,7 +25,7 @@ const PurchaseSuccessPage = () => {
 				setIsProcessing(false);
 			}
 		};
-
+		
 		const sessionId = new URLSearchParams(window.location.search).get("session_id");
 		if (sessionId) {
 			handleCheckoutSuccess(sessionId);
@@ -66,7 +68,7 @@ const PurchaseSuccessPage = () => {
 					<div className='bg-gray-700 rounded-lg p-4 mb-6'>
 						<div className='flex items-center justify-between mb-2'>
 							<span className='text-sm text-gray-400'>Order number</span>
-							<span className='text-sm font-semibold text-emerald-400'>#12345</span>
+							<span className='text-sm font-semibold text-emerald-400'>{orderId}</span>
 						</div>
 					</div>
 

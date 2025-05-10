@@ -2,9 +2,9 @@ import Games from "../models/games.model.js";
 
 export const getCartGames = async (req, res) => {
   try {
-    const Games = await Games.find({ _id: { $in: req.user.cartItems } });
+    const games = await Games.find({ _id: { $in: req.user.cartItems } });
 
-    res.json(Games);
+    res.json(games);
   } catch (err) {
     res.status(500).json({ message: "Server error", err: err.message });
   }
@@ -12,17 +12,16 @@ export const getCartGames = async (req, res) => {
 
 export const addToCart = async (req, res) => {
   try {
-    const { GameId } = req.body;
-
+    const { gameId } = req.body;
     const user = req.user;
-
+    
     const existingGame = await user.cartItems.find(
-      (item) => item.id === GameId
+      (item) => item === gameId
     );
     if (existingGame) {
       alert("Game already in cart");
     } else {
-      user.cartItems.push(GameId);
+      user.cartItems.push(gameId);
     }
     await user.save();
     res.json(user.cartItems);
@@ -31,7 +30,7 @@ export const addToCart = async (req, res) => {
   }
 };
 
-export const deleteFromCart = async (req, res) => {
+export const removeFromCart = async (req, res) => {
   try {
     const { GameId } = req.body;
     const user = req.user;

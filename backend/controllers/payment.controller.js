@@ -6,7 +6,7 @@ export const createCheckoutSession = async (req, res) => {
   try {
     const { products, couponCode } = req.body;
 
-    if (Array.isArray(products) || products.length === 0) {
+    if (!Array.isArray(products) || products.length === 0) {
       return res.status(400).json({ Error: "Invalid or empty cart" });
     }
 
@@ -25,11 +25,11 @@ export const createCheckoutSession = async (req, res) => {
             name: product.name,
             images: [product.image],
           },
-          quantity: 1,
+          unit_amount: amount,
         },
+        quantity: 1,
       };
     });
-
     // cheking for coupon and applying discount
     let coupon = null;
     if (couponCode) {
@@ -46,12 +46,12 @@ export const createCheckoutSession = async (req, res) => {
       }
     }
 
-    const session = stripe.checkout.sessions.create({
+    const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${process.env.CLIENT_URL}/success`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel`,
+      success_url: `${process.env.CLIENT_URL}/purchase-success?session_id={CHECKOUT_SESSION_ID}`,
+			cancel_url: `${process.env.CLIENT_URL}/purchase-cancel`,
       discounts: coupon
         ? [
             {
@@ -63,17 +63,16 @@ export const createCheckoutSession = async (req, res) => {
         userId: req.user._id.toString(),
         couponCode: couponCode || "",
         products: JSON.stringify(
-          products.map((p) => ({ id: p._id, quantity: 1, price: p.price }))
+          products.map((p) => ({ id: p._id, quantity: "1", price: p.price }))
         ),
       },
     });
-    // if customer spent more than 200 usd they get coupon
-    if (totalAmount >= 20000) {
+    // if customer spent more than 50 usd they get coupon
+    if (totalAmount >= 5000) {
       await creeateNewCoupon(req.user._id);
     }
-    return res
-      .status(200)
-      .json({ id: session.id, totalAmount: totalAmount / 100 });
+    res.status(200).json({ id: session.id, totalAmount: totalAmount / 100 });
+
   } catch (err) {
     res
       .status(500)
@@ -142,7 +141,6 @@ export const checkoutSuccess = async (req, res) => {
         });
     }
   } catch (err) {
-    console.error("Error processing successful checkout:", error);
-		res.status(500).json({ message: "Error processing successful checkout", error: error.message });
+		res.status(500).json({ message: "Error processing successful checkout", error: err.message });
   }
 };

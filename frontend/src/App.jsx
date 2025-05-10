@@ -29,10 +29,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
-      {/* Background gradient */}
+      {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0">
-          {/* <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_at_top,rgba(193,15,15)_0%,rgba(10,80,60,0.2)_100%,rgba(139,15,15)_100%)]" /> */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[rgba(15,15,15,1)]" />
         </div>
       </div>
