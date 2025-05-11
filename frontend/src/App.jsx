@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { useUserStore } from "./stores/useUserStore.js";
 import { useCartStore } from "./stores/useCartStore.js";
 import { useEffect } from "react";
+import GamePage from "./pages/GamePage.jsx";
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
   const {getCartItems} = useCartStore();
@@ -42,6 +43,7 @@ function App() {
           <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to="/"/>} />
           <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/"/>} />
           <Route path="/secret-dashboard" element={user?.role === "admin" ? <AdminPage/> : <Navigate to= '/login' />} />
+          <Route path='/AllGames/:gameName' element={<GamePage />} />
           <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
           <Route path="/purchase-success" element={user ? <PurchaseSuccessPage /> : <Navigate to="/login" />} />
           <Route path="/purchase-cancel" element={user ? <PurchaseCancelPage /> : <Navigate to="/login" />} />
