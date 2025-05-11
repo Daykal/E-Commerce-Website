@@ -11,7 +11,6 @@ const GamePage = () => {
     if (products.length === 0) {
       fetchAllProducts();
     }
-    console.log(products);
   }, [products.length, fetchAllProducts]);
 
   const game = products.find(

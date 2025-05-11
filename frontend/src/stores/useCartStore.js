@@ -48,25 +48,37 @@ export const useCartStore = create((set, get) => ({
 	},
 	addToCart: async (product) => {
 		try {
-			await axios.post("/cart", { gameId: product._id });
-			toast.success("Product added to cart");
 
-			set((prevState) => {
-				const existingItem = prevState.cart.find((item) => item._id === product._id);
-				const newCart = existingItem
-					? prevState.cart.map((item) =>
-							item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
-					  )
-					: [...prevState.cart, { ...product, quantity: 1 }];
-				return { cart: newCart };
-			});
+			  const existingItem = get().cart.find(
+          (item) => item._id === product._id
+        );
+        if (existingItem) {
+          toast.error("Item is already in cart");
+          return;
+        }
+
+        await axios.post("/cart", { gameId: product._id });
+        toast.success("Product added to cart");
+        set((prevState) => {
+          const newCart = [...prevState.cart, { ...product, quantity: 1 }];
+          return { cart: newCart };
+        });
+			// set((prevState) => {
+			// 	const existingItem = prevState.cart.find((item) => item._id === product._id);
+			// 	const newCart = existingItem
+			// 		? prevState.cart.map((item) =>
+			// 				item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
+			// 		  )
+			// 		: [...prevState.cart, { ...product, quantity: 1 }];
+			// 	return { cart: newCart };
+			// });
 			get().calculateTotals();
 		} catch (error) {
 			toast.error(error.response.data.message || "An error occurred");
 		}
 	},
 	removeFromCart: async (gameId) => {
-		await axios.delete(`/cart`, { gameId });
+		await axios.delete(`/cart`, { data: {gameId} });
 		set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== gameId) }));
 		get().calculateTotals();
 	},
@@ -74,11 +86,10 @@ export const useCartStore = create((set, get) => ({
 		const { cart, coupon } = get();
 		const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
 		let total = subtotal;
-		let discount = 0;
 		if (coupon) {
-			discount = subtotal * (coupon.discountPercentage / 100);
+			const discount = subtotal * (coupon.discountPercentage / 100);
+			total = subtotal - discount;
 		}
-		total = subtotal - discount;
 
 		set({ subtotal, total });
 	},
