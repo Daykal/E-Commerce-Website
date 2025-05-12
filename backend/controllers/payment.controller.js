@@ -1,5 +1,7 @@
 import Order from "../models/order.model.js";
 import Coupon from "../models/coupon.model.js";
+import User from "../models/user.model.js";
+import mongoose from "mongoose";
 import { stripe } from "../lib/stripe.js";
 
 export const createCheckoutSession = async (req, res) => {
@@ -119,13 +121,13 @@ export const checkoutSuccess = async (req, res) => {
       });
 
       await newOrder.save();
-      res
-        .status(200)
-        .json({
-          Success: true,
-          message: "Payment successful, order created and coupon deactivated if used.",
-          OrderId: newOrder._id,
-        });
+      await addToLibrary(req.user._id, products);
+      return res.status(200).json({
+        Success: true,
+        message:
+          "Payment successful, order created and coupon deactivated if used.",
+        OrderId: newOrder._id,
+      });
     }
   } catch (err) {
 		res.status(500).json({ message: "Error processing successful checkout", error: err.message });
@@ -145,4 +147,26 @@ async function createNewCoupon(userId) {
   await newCoupon.save();
 
   return newCoupon;
+}
+
+async function addToLibrary(userId, products) {
+console.log("addToLibrary was called");
+  try {
+
+
+
+const productIds = products
+  .filter(p => p.id && mongoose.Types.ObjectId.isValid(p.id))
+  .map(p => new mongoose.Types.ObjectId(p.id));
+
+console.log("productIds:", productIds);
+await User.findOneAndUpdate(
+  { _id: userId },
+  { $addToSet: { libraryItems: { $each: productIds } } });
+
+
+   } catch (err) {
+    console.error("Error in addToLibrary:", err.message);
+  }
+
 }

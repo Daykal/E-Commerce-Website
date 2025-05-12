@@ -31,6 +31,12 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+       libraryItems: [
+      {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+      },
+    ],
     role: {
       type: String,
       enum: ["customer", "admin"],
