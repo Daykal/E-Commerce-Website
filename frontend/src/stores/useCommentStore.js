@@ -50,7 +50,7 @@ export const useCommentStore = create((set) => ({
 	deleteComment: async (commentId) => {
 		set({ loading: true });
 		try {
-			await axios.delete("/comments}", {commentId});
+			await axios.delete("/comments", {params: {commentId}});
 			set((prevState) => ({
 				comments: prevState.comments.filter((comment) => comment._id !== commentId),
 				loading: false,

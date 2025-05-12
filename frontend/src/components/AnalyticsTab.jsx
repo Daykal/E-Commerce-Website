@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "../lib/axios";
 import { Users, Package, ShoppingCart, DollarSign } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-
 const AnalyticsTab = () => {
 	const [analyticsData, setAnalyticsData] = useState({
 		users: 0,
@@ -31,7 +30,7 @@ const AnalyticsTab = () => {
 	}, []);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <div/>;
 	}
 
 	return (
