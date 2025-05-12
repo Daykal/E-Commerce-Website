@@ -8,6 +8,7 @@ import cartRouts from "./routes/cart.route.js"
 import couponRouts from "./routes/coupon.route.js"
 import paymentRouts from "./routes/payment.route.js"
 import analyticsRouts from "./routes/analytics.route.js"
+import commentRouts from "./routes/comment.route.js"
 import { connectDB } from "./lib/db.js";
 
 
@@ -24,6 +25,7 @@ app.use("/api/cart", cartRouts);
 app.use("/api/coupons", couponRouts);
 app.use("/api/payments", paymentRouts);
 app.use("/api/analytics", analyticsRouts);
+app.use("/api/comments", commentRouts);
 
 app.listen(PORT, () => {
   console.log(`Listening to PORT: ${PORT}`);
