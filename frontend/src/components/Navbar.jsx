@@ -59,7 +59,7 @@ const Navbar = () => {
             )}
             {isAdmin && (
               <Link
-                className="bg-[rgba(212,175,55,0.8)] hover:bg-[rgba(212,175,55,0.7)] text-white px-3 py-1 rounded-md font-medium
+                className="bg-[rgba(212,175,55,0.6)] hover:bg-[rgba(212,175,55,0.8)] text-white px-3 py-1 rounded-md font-medium
 								 transition duration-300 ease-in-out flex items-center"
                 to={"/secret-dashboard"}
               >
