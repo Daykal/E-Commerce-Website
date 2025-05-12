@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import { useProductStore } from "../stores/useProductStore";
 import ProductCard from "../components/ProductCard.jsx";
@@ -20,6 +21,13 @@ const GamePage = () => {
     return <div></div>;
   }
   return (
+<motion.div
+			
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.5 }}
+		>
+
     <div>
     <div className="flex max-w-6xl mx-auto p-6 gap-8">
       {/* Left side image gallery */}
@@ -54,7 +62,7 @@ const GamePage = () => {
     </div>
 </div>
 </div>
-
+</motion.div>
 
     // </div>
     // <div className='relative overflow-hidden h-96 w-full rounded-lg group'>

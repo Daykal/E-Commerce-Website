@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useProductStore } from '../stores/useProductStore';
 import LoadingSpinner from './LoadingSpinner';
@@ -19,8 +20,13 @@ const LibraryCard = ({item}) => {
     return LoadingSpinner;
   }
 
-    console.log(item);
   return (
+    	<motion.div
+			
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.5 }}
+		>
     <div className="w-4/5 h-24 bg-[rgba(28,28,30,0.9)] rounded-2xl shadow-md flex items-center justify-between px-4 my-2 mx-auto">
       {/* Left: Image */}
       <img
@@ -35,13 +41,16 @@ const LibraryCard = ({item}) => {
 
       {/* Right: Button */}
       <a
-        className=" bg-[rgba(212,175,55,0.6)] hover:bg-[rgba(212,175,55,0.8)] px-4 py-2 rounded-md  transition text-lg text-gray-300 hover:text-emerald-400"
         href={game.downloadLink}
         target="_blank"
-      >
-        <button>Download</button>
+        >
+        <button className='cursor-pointer bg-[rgba(212,175,55,0.6)] hover:bg-[rgba(212,175,55,0.8)] px-4 py-2 rounded-md  transition text-lg text-gray-300 hover:text-emerald-400'>
+          Download
+          </button>
       </a>
+
     </div>
+    </motion.div>
   );
 }
 
