@@ -5,7 +5,8 @@ import mongoose from "mongoose";
 
 export const getComments = async (req, res) => {
     try {
-        const gameId = req.body.gameId;
+      console.log(req.query);
+        const gameId = req.query.gameId;
         if (!mongoose.Types.ObjectId.isValid(gameId)) {
     return res.status(400).json({ message: "Invalid game ID" });
   }

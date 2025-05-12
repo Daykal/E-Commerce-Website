@@ -19,8 +19,8 @@ if (!libraryItems) {
   
   return (
     <div>
-      {libraryItems.map((item, index) => (
-        <LibraryCard key={index} item={item} />
+      {libraryItems.map((item) => (
+        <LibraryCard key={item._id} item={item} />
       ))}
     </div>
   );

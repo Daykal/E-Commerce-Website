@@ -5,8 +5,7 @@ import { useProductStore } from '../stores/useProductStore';
 import LoadingSpinner from './LoadingSpinner';
 
 const LibraryCard = ({item}) => {
-
-  const { products, fetchAllProducts } = useProductStore();
+  const { products, fetchAllProducts, loading } = useProductStore();
 
   useEffect(() => {
     if (products.length === 0) {
@@ -14,12 +13,18 @@ const LibraryCard = ({item}) => {
     }
   }, [products.length, fetchAllProducts]);
 
-
-  const game = products.find((g) => g._id === item);
-  if (!game) {
-    return LoadingSpinner;
+  if (loading || products.length === 0) {
+    return <LoadingSpinner />;
   }
+  const getItemId = (item) =>
+  typeof item === "string" ? item : item?._id?.toString();
 
+const game = products.find(
+  (g) => g._id.toString() === getItemId(item)
+);
+if (!game) {
+  return <div>Game not found</div>;
+}
   return (
     	<motion.div
 			

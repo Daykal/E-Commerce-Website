@@ -24,7 +24,6 @@ export const useProductStore = create((set) => ({
 		set({ loading: true });
 		try {
 			const response = await axios.get("/games");
-            console.log(response.data);
 			set({ products: response.data.games, loading: false });
 		} catch (error) {
 			set({ error: "Failed to fetch products", loading: false });
