@@ -10,9 +10,7 @@ const stripePromise = loadStripe(
 );
 
 const OrderSummary = () => {
-	//const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
 	const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
-console.log(total, subtotal, coupon, isCouponApplied, cart)
 	const savings = subtotal - total;
 	const formattedSubtotal = subtotal.toFixed(2);
 	const formattedTotal = total.toFixed(2);
@@ -34,7 +32,10 @@ console.log(total, subtotal, coupon, isCouponApplied, cart)
 			console.error("Error:", result.error);
 		}
 	};
-
+	
+	if (isNaN(total)) {
+		window.location.reload();
+	}
 	return (
 		<motion.div
 			className='space-y-4 rounded-lg border border-gray-700 bg-gray-800 p-4 shadow-sm sm:p-6'

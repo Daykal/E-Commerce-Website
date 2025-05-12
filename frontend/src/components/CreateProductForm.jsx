@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import { PlusCircle, Upload, Loader } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore.js";
 
-const categories = ["jeans", "t-shirts", "shoes", "glasses", "jackets", "suits", "bags"];
+const categories = ["Action", "Adventure",  "Racing", "Shooter", "Strategy"];
 
 const CreateProductForm = () => {
 	const [newProduct, setNewProduct] = useState({
 		name: "",
 		description: "",
+		downloadLink: "",
 		price: "",
 		category: "",
 		image: "",
@@ -20,7 +21,7 @@ const CreateProductForm = () => {
 		e.preventDefault();
 		try {
 			await createProduct(newProduct);
-			setNewProduct({ name: "", description: "", price: "", category: "", image: "" });
+			setNewProduct({ name: "", description: "", downloadLink: "", price: "", category: "", image: "" });
 		} catch {
 			console.log("error creating a product");
 		}
@@ -75,6 +76,23 @@ const CreateProductForm = () => {
 						name='description'
 						value={newProduct.description}
 						onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+						rows='3'
+						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm
+						 py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-[rgba(212,175,55,0.6)] 
+						 focus:border-[rgba(212,175,55,0.6)]'
+						required
+					/>
+				</div>
+
+				<div>
+					<label htmlFor='downloadLink' className='block text-sm font-medium text-gray-300'>
+						Download Link
+					</label>
+					<textarea
+						id='dpwnloadLink'
+						name='downloadLink'
+						value={newProduct.downloadLink}
+						onChange={(e) => setNewProduct({ ...newProduct, downloadLink: e.target.value })}
 						rows='3'
 						className='mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm
 						 py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-[rgba(212,175,55,0.6)] 

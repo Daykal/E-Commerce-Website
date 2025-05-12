@@ -15,7 +15,6 @@ const LibraryCard = ({item}) => {
 
 
   const game = products.find((g) => g._id === item);
-  console.log(game)
   if (!game) {
     return LoadingSpinner;
   }
@@ -37,7 +36,7 @@ const LibraryCard = ({item}) => {
       {/* Right: Button */}
       <a
         className=" bg-[rgba(212,175,55,0.6)] hover:bg-[rgba(212,175,55,0.8)] px-4 py-2 rounded-md  transition text-lg text-gray-300 hover:text-emerald-400"
-        href="https://example.com/your-download-link"
+        href={game.downloadLink}
         target="_blank"
       >
         <button>Download</button>

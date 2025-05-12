@@ -35,7 +35,7 @@ export const getFeaturedGames = async (req, res) => {
 
 export const createGame = async (req, res) => {
   try {
-    const { name, description, price, image, category } = req.body;
+    const { name, description, downloadLink, price, image, category } = req.body;
 
     let cloudinaryResponse = null;
     if (image) {
@@ -47,6 +47,7 @@ export const createGame = async (req, res) => {
     const game = await Games.create({
       name,
       description,
+      downloadLink,
       price,
       image: cloudinaryResponse?.secure_url
         ? cloudinaryResponse.secure_url

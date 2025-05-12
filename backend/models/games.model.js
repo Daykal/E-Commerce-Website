@@ -9,6 +9,10 @@ description: {
     type: String,
     required: true,
 },
+downloadLink: {
+    type: String,
+    required: true,
+},
 price:{
     type: Number,
     required: true,
