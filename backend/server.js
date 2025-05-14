@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import authRouts from "./routes/auth.route.js"
 import gameRouts from "./routes/games.route.js"
@@ -17,7 +18,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(express.json({ limit: "5mb"})); // parse body of request
+const __dirname = path.resolve();
+app.use(express.static(__dirname + "/public"));
+
+app.use(express.json({ limit: "8mb"})); // parse body of request
 app.use(cookieParser()); // parse cookies of request
 app.use("/api/auth", authRouts);
 app.use("/api/games", gameRouts);
@@ -26,6 +30,14 @@ app.use("/api/coupons", couponRouts);
 app.use("/api/payments", paymentRouts);
 app.use("/api/analytics", analyticsRouts);
 app.use("/api/comments", commentRouts);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Listening to PORT: ${PORT}`);
