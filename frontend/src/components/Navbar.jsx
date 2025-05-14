@@ -2,6 +2,7 @@ import { ShoppingCart, UserPlus, LogIn, LogOut, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../stores/useUserStore";
 import { useCartStore } from "../stores/useCartStore";
+import logo from "../assets/gameController.svg";
 
 const Navbar = () => {
 		const { user, logout } = useUserStore();
@@ -17,6 +18,7 @@ const Navbar = () => {
             to="/"
             className="text-2xl font-bold text-[rgba(212,175,55,0.6)] items-center space-x-2 flex"
           >
+            <img src={logo} alt="Logo" className="w-10 h-10 mx-2" />
             GameStoreGG
           </Link>
 
