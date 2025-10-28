@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Daykal/E-Commerce-Website#readme",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.919.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.6.0",
     "cookie-parser": "^1.4.7",
