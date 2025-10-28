@@ -1,8 +1,11 @@
-import { json } from "express";
 import { redis } from "../lib/redis.js";
 import cloudinary from "../lib/cloudinary.js";
+import dotenv from "dotenv";
 import s3Client from "../lib/minio.js";
+import { PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import Games from "../models/games.model.js";
+
+dotenv.config();
 
 export const getAllGames = async (req, res) => {
   try {
@@ -36,13 +39,51 @@ export const getFeaturedGames = async (req, res) => {
 
 export const createGame = async (req, res) => {
   try {
-    const { name, description, downloadLink, price, image, category } = req.body;
+    const { name, description, downloadLink, price, image, category } =
+      req.body;
 
-    let cloudinaryResponse = null;
+    let imageUrl = "";
     if (image) {
-      cloudinaryResponse = await cloudinary.uploader.upload(image, {
-        folder: "games",
-      });
+      try {
+        //Extract MIME type from base64
+        const matches = image.match(/^data:(image\/\w+);base64,/);
+        if (!matches) throw new Error("Invalid image format");
+
+        const mimeType = matches[1]; // e.g., 'image/png'
+        const ext = mimeType.split("/")[1]; // e.g., 'png'
+
+        //Generate unique filename
+        const fileKey = `games/${Date.now()}-${Math.round(
+          Math.random() * 1e6
+        )}.${ext}`;
+
+        //Convert base64 -> buffer
+        const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
+        const buffer = Buffer.from(base64Data, "base64");
+
+        //Upload to MinIO
+        await s3Client.send(
+          new PutObjectCommand({
+            Bucket: process.env.MINIO_BUCKET,
+            Key: fileKey,
+            Body: buffer,
+            ContentType: mimeType,
+          })
+        );
+
+        //Generate public URL (HTTP only for local Docker)
+        imageUrl = `http://${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET}/${fileKey}`;
+
+        console.log(`Uploaded image to MinIO: ${imageUrl}`);
+      } catch (err) {
+        console.error(
+          `Error uploading image to MinIO: ${imageUrl}`,
+          err.message
+        );
+        return res
+          .status(500)
+          .json({ message: "Failed to upload image", error: err.message });
+      }
     }
 
     const game = await Games.create({
@@ -50,9 +91,7 @@ export const createGame = async (req, res) => {
       description,
       downloadLink,
       price,
-      image: cloudinaryResponse?.secure_url
-        ? cloudinaryResponse.secure_url
-        : "",
+      image: imageUrl,
       category,
     });
 
@@ -69,11 +108,22 @@ export const deleteGame = async (req, res) => {
       return res.status(404).json({ message: "Game not found" });
     }
     if (game.image) {
-      const imageId = game.image.split("/").pop().split(".")[0];
       try {
-        await cloudinary.uploader.destroy(`games/${imageId}`);
+        // Extract the object key from the URL
+        const url = new URL(game.image);
+        const key = url.pathname.split("/").slice(2).join("/");
+        // slice(2) skips the leading '/' and bucket name in path: /bucket/key
+
+        await s3Client.send(
+          new DeleteObjectCommand({
+            Bucket: process.env.MINIO_BUCKET,
+            Key: key,
+          })
+        );
+
+        console.log(`Deleted ${key} from MinIO`);
       } catch (err) {
-        console.log(err.message);
+        console.log("Error deleting from MinIO:", err.message);
       }
     }
     await Games.findByIdAndDelete(req.params.id);
@@ -121,7 +171,7 @@ export const toggleFeaturedGame = async (req, res) => {
       const updatedGame = await game.save();
       await updateFeaturedGmaesCache();
       res.json(updatedGame);
-    }else{
+    } else {
       res.status(404).json({ message: "Game not found" });
     }
   } catch (err) {
@@ -136,4 +186,4 @@ async function updateFeaturedGmaesCache() {
   } catch (err) {
     res.status(500).json({ message: "Server error", err: err.message });
   }
-};
+}
