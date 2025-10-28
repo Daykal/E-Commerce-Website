@@ -1,6 +1,7 @@
 import { json } from "express";
 import { redis } from "../lib/redis.js";
 import cloudinary from "../lib/cloudinary.js";
+import s3Client from "../lib/minio.js";
 import Games from "../models/games.model.js";
 
 export const getAllGames = async (req, res) => {
