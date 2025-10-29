@@ -69,6 +69,7 @@ export const createCheckoutSession = async (req, res) => {
         ),
       },
     });
+
     // if customer spent more than 50 usd they get coupon
     if (totalAmount >= 5000) {
       await createNewCoupon(req.user._id);

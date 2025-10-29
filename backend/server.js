@@ -18,6 +18,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Content-Security-Policy",
+//     "style-src 'self' 'unsafe-inline' https://m.stripe.network;"
+//   );
+//   next();
+// });
+
 const __dirname = path.resolve();
 app.use(express.static(__dirname + "/public"));
 

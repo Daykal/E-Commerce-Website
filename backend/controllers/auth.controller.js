@@ -122,7 +122,11 @@ export const refreshToken = async (req, res) => {
       return res.status(401).json({ message: "Invalid refresh token" });
     }
 
-    const accessToken = jwt.sign({userId: decoded.userId}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
+    const accessToken = jwt.sign(
+      { userId: decoded.userId },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "15m" }
+    );
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -131,16 +135,15 @@ export const refreshToken = async (req, res) => {
     });
 
     res.json("Token refreshed successfully");
-
   } catch (err) {
     res.status(500).json({ message: "server error", error: err.message });
   }
 };
 
-export const getPorifle = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     res.json(req.user);
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message});
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };

@@ -29,7 +29,7 @@ const OrderSummary = () => {
 		});
 
 		if (result.error) {
-			console.error("Error:", result.error);
+			console.error("Error:", result.error.message);
 		}
 	};
 	
