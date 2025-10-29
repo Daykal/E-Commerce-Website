@@ -1,0 +1,26 @@
+# Node dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Build output (if any)
+build
+coverage
+
+# Git and Docker
+.git
+.gitignore
+.dockerignore
+Dockerfile
+
+# System files
+*.DS_Store
+*.swp
+*.bak

@@ -1,0 +1,54 @@
+import dotenv from "dotenv";
+import express from "express";
+import cookieParser from "cookie-parser";
+import path from "path";
+
+import authRouts from "./routes/auth.route.js";
+import gameRouts from "./routes/games.route.js";
+import cartRouts from "./routes/cart.route.js";
+import couponRouts from "./routes/coupon.route.js";
+import paymentRouts from "./routes/payment.route.js";
+import analyticsRouts from "./routes/analytics.route.js";
+import commentRouts from "./routes/comment.route.js";
+import { connectDB } from "./lib/db.js";
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Content-Security-Policy",
+//     "style-src 'self' 'unsafe-inline' https://m.stripe.network;"
+//   );
+//   next();
+// });
+
+const __dirname = path.resolve();
+app.use(express.static(__dirname + "/public"));
+
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use(cookieParser()); // parse cookies of request
+app.use("/api/auth", authRouts);
+app.use("/api/games", gameRouts);
+app.use("/api/cart", cartRouts);
+app.use("/api/coupons", couponRouts);
+app.use("/api/payments", paymentRouts);
+app.use("/api/analytics", analyticsRouts);
+app.use("/api/comments", commentRouts);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+  });
+}
+
+app.listen(PORT, () => {
+  console.log(`Listening to PORT: ${PORT}`);
+
+  connectDB();
+});
