@@ -25,7 +25,6 @@ export const useCommentStore = create((set) => ({
 		set({ loading: true, error: null });
 		try {
 			const response = await axios.get("/comments", { params: {gameId} });
-            console.log(response.data);
 			set({ comments: response.data, loading: false });
 		} catch (error) {
 			set({ error: "Failed to fetch comments", loading: false });

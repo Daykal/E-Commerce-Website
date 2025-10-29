@@ -16,18 +16,20 @@ import GamePage from "./pages/GamePage.jsx";
 import LibraryPage from "./pages/LibraryPage.jsx";
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
-  const {getCartItems} = useCartStore();
+  const { getCartItems } = useCartStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
   useEffect(() => {
-    if(!user) return;
-      getCartItems();
+    if (!user) return;
+    getCartItems();
   }, [getCartItems, user]);
 
-  if (checkingAuth) {return <LoadingSpinner/>};
+  if (checkingAuth) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
@@ -41,16 +43,42 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to="/"/>} />
-          <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/"/>} />
-          <Route path="/secret-dashboard" element={user?.role === "admin" ? <AdminPage/> : <Navigate to= '/login' />} />
-          <Route path='/AllGames/:gameName' element={<GamePage />} />
-          <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
-          <Route path="/library" element={user ? <LibraryPage /> : <Navigate to="/login" />} />
-          <Route path="/purchase-success" element={user ? <PurchaseSuccessPage /> : <Navigate to="/login" />} />
-          <Route path="/purchase-cancel" element={user ? <PurchaseCancelPage /> : <Navigate to="/login" />} />
+          <Route
+            path="/signup"
+            element={!user ? <SignUpPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/login"
+            element={!user ? <LoginPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/secret-dashboard"
+            element={
+              user?.role === "admin" ? <AdminPage /> : <Navigate to="/login" />
+            }
+          />
+          <Route path="/AllGames/:gameName" element={<GamePage />} />
+          <Route
+            path="/cart"
+            element={user ? <CartPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/library"
+            element={user ? <LibraryPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/purchase-success"
+            element={user ? <PurchaseSuccessPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/purchase-cancel"
+            element={user ? <PurchaseCancelPage /> : <Navigate to="/login" />}
+          />
         </Routes>
       </div>
+      <p className="fixed bottom-2 left-0 w-full text-center text-gray-700 text-sm bg-white/80 py-1 z-50">
+        This is a school project. I do not sell anything.
+      </p>
       <Toaster />
     </div>
   );

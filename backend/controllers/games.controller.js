@@ -1,5 +1,4 @@
 import { redis } from "../lib/redis.js";
-import cloudinary from "../lib/cloudinary.js";
 import dotenv from "dotenv";
 import s3Client from "../lib/minio.js";
 import { PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";

@@ -28,7 +28,7 @@ const GamePage = () => {
       setNewComment("");
       setIsWritingComment(false);
     } catch {
-      console.log("error creating a comment");
+      // console.log("error creating a comment");
     }
   };
 
@@ -38,7 +38,7 @@ const GamePage = () => {
       setEditingCommentId(null);
       setEditText("");
     } catch {
-      console.log("error updating a comment");
+      // console.log("error updating a comment");
     }
   };
 
@@ -46,7 +46,7 @@ const GamePage = () => {
     try {
       await deleteComment(commentId, user._id);
     } catch {
-      console.log("error deleting a comment");
+      // console.log("error deleting a comment");
     }
   };
 
