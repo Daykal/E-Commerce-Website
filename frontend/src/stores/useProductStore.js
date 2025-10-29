@@ -82,7 +82,6 @@ export const useProductStore = create((set) => ({
       set({ products: response.data, loading: false });
     } catch (error) {
       set({ error: "Failed to fetch products", loading: false });
-      console.log("Error fetching featured products:", error);
     }
   },
 }));

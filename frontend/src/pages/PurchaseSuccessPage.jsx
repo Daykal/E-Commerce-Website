@@ -20,7 +20,7 @@ const PurchaseSuccessPage = () => {
 				setOrderId(res.data.OrderId);
 				clearCart();
 			} catch (error) {
-				console.log(error);
+				// console.log(error);
 			} finally {
 				setIsProcessing(false);
 			}

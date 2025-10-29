@@ -77,7 +77,7 @@ const GamePage = () => {
 
   const commentsTextArray = comments.map((comment) => comment.text);
 
-  console.log(commentsTextArray);
+  // console.log(commentsTextArray);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

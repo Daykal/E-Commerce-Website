@@ -29,7 +29,6 @@ export const createComment = async (req, res) => {
     if (!gameExist || !userExist) {
       return res.status(404).json({ message: "Game or user not found" });
     }
-    console.log(text, userId, gameId);
     const comment = new Comment({ text, userId, gameId });
     await comment.save();
     res.status(201).json({ message: "comment created successfully", comment });

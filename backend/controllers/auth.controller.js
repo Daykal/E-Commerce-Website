@@ -9,8 +9,6 @@ const generateTokens = (userId) => {
   const refreshToken = jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: "7d",
   });
-  console.log(process.env.ACCESS_TOKEN_SECRET);
-  console.log(process.env.REFRESH_TOKEN_SECRET);
   return { accessToken, refreshToken };
 };
 
@@ -142,6 +140,10 @@ export const refreshToken = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
+    if (!req.user) {
+      
+      // return res.status(401).json({ message: "Unauthorized" });
+    }
     res.json(req.user);
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });

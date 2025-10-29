@@ -151,7 +151,6 @@ async function createNewCoupon(userId) {
 }
 
 async function addToLibrary(userId, products) {
-console.log("addToLibrary was called");
   try {
 
 
@@ -160,7 +159,6 @@ const productIds = products
   .filter(p => p.id && mongoose.Types.ObjectId.isValid(p.id))
   .map(p => new mongoose.Types.ObjectId(p.id));
 
-console.log("productIds:", productIds);
 await User.findOneAndUpdate(
   { _id: userId },
   { $addToSet: { libraryItems: { $each: productIds } } });
