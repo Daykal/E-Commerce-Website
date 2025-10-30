@@ -11,11 +11,13 @@ import paymentRouts from "./routes/payment.route.js";
 import analyticsRouts from "./routes/analytics.route.js";
 import commentRouts from "./routes/comment.route.js";
 import { connectDB } from "./lib/db.js";
+import rateLimiter from "./middleware/rate.limiter.js";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+app.use(rateLimiter);
 
 // app.use((req, res, next) => {
 //   res.setHeader(

@@ -3,21 +3,21 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import path from "path";
 
-import authRouts from "./routes/auth.route.js"
-import gameRouts from "./routes/games.route.js"
-import cartRouts from "./routes/cart.route.js"
-import couponRouts from "./routes/coupon.route.js"
-import paymentRouts from "./routes/payment.route.js"
-import analyticsRouts from "./routes/analytics.route.js"
-import commentRouts from "./routes/comment.route.js"
+import authRouts from "./routes/auth.route.js";
+import gameRouts from "./routes/games.route.js";
+import cartRouts from "./routes/cart.route.js";
+import couponRouts from "./routes/coupon.route.js";
+import paymentRouts from "./routes/payment.route.js";
+import analyticsRouts from "./routes/analytics.route.js";
+import commentRouts from "./routes/comment.route.js";
 import { connectDB } from "./lib/db.js";
-
+import rateLimiter from "./middleware/rate.limiter.js";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
+app.use(rateLimiter);
 // app.use((req, res, next) => {
 //   res.setHeader(
 //     "Content-Security-Policy",
@@ -42,7 +42,7 @@ app.use("/api/comments", commentRouts);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
-  
+
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
   });
